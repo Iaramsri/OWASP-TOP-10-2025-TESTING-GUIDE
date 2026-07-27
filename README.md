@@ -1,4 +1,4 @@
-# Comprehensive GitHub README Testing Guide for the OWASP Top Ten 2025
+# Comprehensive Testing Guide for the OWASP Top Ten 2025
 
 ## Executive Summary
 
@@ -24,8 +24,6 @@ That matrix is an editorial recommendation derived from OWASP’s ranking and de
 
 This guide should be built around official OWASP material first. The primary source is the **OWASP Top Ten Twenty Twenty-Five** release and its category pages. The strongest companion documents are the **WSTG**, **ASVS Five Point Zero**, and the **OWASP Cheat Sheet Series**. For CI/CD and supply-chain sections, the most authoritative modern complements are **NIST SP Eight Hundred Eighteen**, **CISA Secure by Design**, **CycloneDX**, and **SLSA**. For GitHub implementation details, use **GitHub Docs**, plus official tool documentation for **ZAP**, **CodeQL**, **Burp**, **Semgrep**, **Trivy**, and **OWASP Dependency-Check**.
 
-A disciplined README should treat testing as a **layered system**, not a single scanner run:
-
 | Layer | Purpose | Best examples |
 |---|---|---|
 | Manual security testing | Finds logic flaws, edge cases, and contextual authorization issues | Burp Repeater, Burp Intruder, browser DevTools, curl |
@@ -36,10 +34,6 @@ A disciplined README should treat testing as a **layered system**, not a single 
 | Operational validation | Confirms logs, alerts, and safe failure | Log assertions, alert pipeline verification, chaos or fault injection |
 
 That layered approach aligns closely with OWASP’s WSTG scope, ASVS verification model, and NIST’s recommendation to embed secure software practices throughout the SDLC rather than treat security as a final-stage check.
-
-For GitHub presentation, Mermaid is worth using because GitHub supports Mermaid diagrams inside fenced code blocks, and GitHub also supports collapsible `<details>` sections for keeping long READMEs readable.
-
-Below is a Mermaid diagram that works well near the beginning of the README to explain the intended testing flow.
 
 ```mermaid
 flowchart TD
@@ -246,37 +240,7 @@ Use official sources first:
 - NIST SSDF
 - CISA Secure by Design
 - GitHub Actions and Code Security documentation
-
-## Contributing
-
-We welcome:
-- rule improvements
-- new CI examples
-- language-specific remediations
-- corrections to mapped test cases
-- better Mermaid diagrams and evidence templates
-
-### Contribution Rules
-
-1. Prefer official OWASP, NIST, CISA, GitHub, or vendor-primary documentation.
-2. Add citations for factual claims and tool behavior.
-3. Include “expected result” and “remediation” for every new test case.
-4. Keep examples legal, defensive, and suitable for owned test environments only.
-5. For tool examples, include version assumptions where relevant.
-
-### Pull Request Checklist
-
-- [ ] References are authoritative
-- [ ] Markdown renders correctly on GitHub
-- [ ] Mermaid diagrams render on GitHub
-- [ ] Code samples are framework-agnostic or clearly labeled
-- [ ] New checks are aligned to an OWASP Top 10 category
 ```
-
-## Detailed Testing Playbooks
-
-The most effective way to write the long-form README is to keep each category section structurally consistent: **background**, **representative attack scenarios**, **manual detection**, **automated detection**, **sample commands**, **test cases with expected results**, **remediation**, and **references**. That consistency makes the document easier to browse and helps contributors extend it without drift. OWASP category pages, WSTG sections, and ASVS requirements are the best anchors for that pattern.
-
 ### Broken Access Control
 
 **OWASP identifier:** A01:2025. OWASP keeps Broken Access Control at the top position and says all tested applications in the contributed dataset showed some form of this problem. The category explicitly includes IDOR-style issues, missing method-level checks, CORS misconfiguration abuse, token or metadata tampering, force browsing, and SSRF through the Twenty Twenty-Five consolidation.
@@ -357,7 +321,7 @@ Remediation should be centralized and server-side: deny by default, enforce reco
 
 **OWASP identifier:** A02:2025. OWASP moved Security Misconfiguration from fifth to second. The category page emphasizes that modern software is increasingly configuration-driven and that insecure defaults, unnecessary features, unchanged default accounts, verbose errors, and disabled security features are common roots of exposure. XXE remains one of the notable mapped weaknesses in this category.
 
-This category is where many “easy wins” appear. Typical attack scenarios include an exposed admin console, directory listing, default credentials, permissive CORS, debug or stack-trace disclosure, `.git` or backup files under the web root, disabled security headers, or insecure cloud and framework defaults. Configuration drift between preview, staging, and production is often the real problem, so the README should explicitly tell testers to compare environments rather than inspect one environment in isolation.
+This category is where many “easy wins” appear. Typical attack scenarios include an exposed admin console, directory listing, default credentials, permissive CORS, debug or stack-trace disclosure, `.git` or backup files under the web root, disabled security headers, or insecure cloud and framework defaults. Configuration drift between preview, staging, and production is often the real problem.
 
 Manual detection should include header inspection, default-path discovery, method enumeration, TLS and cookie review, content-type and error-path analysis, and direct requests to common backup or metadata files. DAST can surface missing headers and dangerous surface area quickly, but IaC and runtime configuration scanning are essential because many of these flaws live outside application code. OWASP’s WSTG Configuration and Deployment Management Testing section, the Error Handling Cheat Sheet, the TLS Cheat Sheet, and the XXE Prevention Cheat Sheet are the strongest reference set here.
 
@@ -474,7 +438,7 @@ Remediation should use modern transport security, secure cookie policy, strong k
 
 ### Injection
 
-**OWASP identifier:** A05:2025. OWASP continues to place Injection among the most tested and most significant categories, and the Twenty Twenty-Five page explicitly reminds readers that the category includes a wide range of weaknesses from XSS to SQL injection. The practical consequence is that the README should not present Injection as “just SQLi.” It should treat it as **untrusted input reaching an interpreter or context without correct separation**. 
+**OWASP identifier:** A05:2025. OWASP continues to place Injection among the most tested and most significant categories, and the Twenty Twenty-Five page explicitly reminds readers that the category includes a wide range of weaknesses from XSS to SQL injection. **untrusted input reaching an interpreter or context without correct separation**. 
 
 A serious Injection section should cover at least SQL injection, NoSQL injection, OS command injection, LDAP injection, XPath injection, template injection, and XSS. OWASP’s Input Validation, Injection Prevention, SQL Injection Prevention, and Query Parameterization cheat sheets are the core prevention references. PortSwigger’s Web Security Academy is also a strong primary training and scenario source for SQLi, XSS, NoSQLi, and related variants. 
 
@@ -593,13 +557,11 @@ curl -i -H "Cookie: session=$SESSION" \
 | Logout followed by resource request | curl / browser | Session invalid; access denied |
 | MFA bypass via alternate endpoint | Manual flow testing | MFA policy enforced consistently |
 
-Remediation should favor standards-based auth, secure session handling, strong password hashing, MFA for sensitive use cases, generic failure messages, and throttling that makes bulk guessing materially harder. OWASP’s Authentication and Password Storage cheat sheets are particularly important for the implementation section of the README.
+Remediation should favor standards-based auth, secure session handling, strong password hashing, MFA for sensitive use cases, generic failure messages, and throttling that makes bulk guessing materially harder. OWASP’s Authentication and Password Storage cheat sheets are particularly important for the implementation section.
 
 ### Software or Data Integrity Failures
 
 **OWASP identifier:** A08:2025. OWASP describes this category as a failure to maintain trust boundaries and verify the integrity of software, code, and data artifacts, at a lower level than the broader supply-chain category. The examples OWASP calls out include plugins or libraries from untrusted sources and insecure CI/CD paths that consume unverified artifacts. Unsafe deserialization remains a core theme.
-
-The most useful way to explain this category in a README is to divide it into **artifact integrity** and **data trust**. Artifact integrity covers script and plugin trust, unsigned updates, unverified build outputs, improper CDN trust, and webhook or callback signatures. Data trust covers deserialization of hostile input, object attribute pollution, and acceptance of critical state data without integrity protection. OWASP’s Deserialization Cheat Sheet and Software Supply Chain Security Cheat Sheet are the best practical references.
 
 Manual testing should include tampering with signed-looking blobs, removing or changing webhook signature headers, altering serialized fields or signed cookies, forcing the application to process untrusted objects, and checking whether external scripts or update channels have integrity controls. Static review should look for dangerous native deserialization APIs, permissive object mapping, and trust of user-provided metadata in update or workflow logic.
 
@@ -639,9 +601,7 @@ Remediation generally means **verify before trust**: verify signatures or MACs o
 
 **OWASP identifier:** A09:2025. OWASP kept this category and slightly renamed it to emphasize alerting, not just logging. The category page stresses that without logging and monitoring, breaches cannot be detected, and without alerting, response is too slow to matter. OWASP also notes that the category is difficult to test directly from vulnerability datasets but remains operationally critical.
 
-A strong README section should make this category concrete. Testing should create events that absolutely must be visible: failed logins, high-value transaction attempts, authorization denials, admin changes, mass export attempts, deserialization failures, and repeated malformed requests. The Logging Cheat Sheet is the primary design reference, while the Top Ten page provides the category rationale.
-
-Manual validation should confirm that logs capture **who, what, when, where, and outcome** without exposing secrets such as passwords, tokens, or sensitive personal data. It should also confirm that logs are centralized, protected from tampering, retained appropriately, and surfaced into actionable alerts. A lot of teams log events but never test whether the alerting path reaches an analyst or on-call engineer. The README should require testing the complete chain.
+Manual validation should confirm that logs capture **who, what, when, where, and outcome** without exposing secrets such as passwords, tokens, or sensitive personal data. It should also confirm that logs are centralized, protected from tampering, retained appropriately, and surfaced into actionable alerts. A lot of teams log events but never test whether the alerting path reaches an analyst or on-call engineer.
 
 Automated checks should include unit tests that assert security events are emitted, integration tests that confirm correlation IDs and event fields, and operational tests that verify SIEM or paging rules for critical patterns. For example, five failed admin logins in a short interval should produce both logs and an alert. 
 
@@ -713,10 +673,6 @@ curl -i -X POST https://app.example.test/api/transfers \
 | Inspect user-facing error detail | Browser / proxy | No internal class names, SQL errors, or secrets exposed |
 
 Remediation should move exception handling closer to failure points, return generic client-safe errors, enforce validation before business logic, implement fail-secure defaults, preserve transactional integrity, and ensure all unexpected conditions are logged for analysis. OWASP’s Error Handling Cheat Sheet specifically recommends generic user responses with full details retained only on the server side.
-
-## Visuals, Tooling, and Continuous Validation
-
-A mature README should include a small number of diagrams that materially improve understanding, rather than many decorative ones. GitHub’s Mermaid support makes three diagram types particularly useful: a **request-flow authorization diagram**, a **CI/CD security gate sequence diagram**, and a **state-transition flowchart** for business-logic testing.
 
 Here is a Mermaid sequence diagram that works well in the CI/CD section:
 
