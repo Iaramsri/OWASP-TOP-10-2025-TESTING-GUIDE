@@ -76,11 +76,6 @@ sequenceDiagram
     Note over API: No data returned, no side effects, denial logged
 ```
 
-## GitHub README Template
-
-The template below is ready to paste into a `README.md`. It uses badges, a table of contents, contribution guidance, Mermaid placeholders, and collapsible sections so the file stays usable even when it grows large. GitHub supports Markdown rendering, Mermaid diagrams, and `<details>` sections, so all of these elements are appropriate for a GitHub-native guide. 
-
-```md
 # OWASP Top 10 2025 Web Application Testing Guide
 
 [![Security Policy](https://img.shields.io/badge/Security-Policy-blue)](./SECURITY.md)
