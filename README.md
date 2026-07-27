@@ -1,4 +1,4 @@
-# Comprehensive GitHub README Testing Guide for the OWASP Top Ten Twenty Twenty-Five
+# Comprehensive GitHub README Testing Guide for the OWASP Top Ten 2025
 
 ## Executive Summary
 
@@ -277,8 +277,6 @@ We welcome:
 - [ ] Code samples are framework-agnostic or clearly labeled
 - [ ] New checks are aligned to an OWASP Top 10 category
 ```
-
-A good companion file to include alongside the README is a short `SECURITY.md` that explains how findings should be reported and what evidence is required. That keeps the README focused on testing and the security policy focused on handling results.
 
 ## Detailed Testing Playbooks
 
